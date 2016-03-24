@@ -1,0 +1,13 @@
+x = c
+y = c
+
+dynamic programming:
+
+1. choose one from x 
+or
+2. choose one from y
+3. return false
+
+choose from x or || choose from y 
+
+remember the index i.. for z 
