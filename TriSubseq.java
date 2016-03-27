@@ -25,7 +25,6 @@ public class TriSubseq {
 		int[] count = new int[nums.length];
 		count[0] = 1;
 		int max;
-		int curindex = 0;
 		for (int i=1;i<nums.length;i++) {
 			int c = 0;
 			max = 0;
@@ -34,7 +33,6 @@ public class TriSubseq {
 				// longest increasing sequence ending j..
 				if(nums[j] < nums[i]) {
 					if(max < count[j]) {
-						curindex = j;
 						max = count[j];
 					}
 				}
@@ -42,28 +40,40 @@ public class TriSubseq {
 			}
 			// System.out.println(curindex);
 			//** count current or not
-			count[i] = Math.max(max + 1,count[i-1]);
+			count[i] = max + 1;
 
 		}
 		// for (int k = 0;k<count.length;k++) {
 		// 	System.out.print(count[k]);
 		// }
 		getSequence(nums,count);
-		return count[nums.length-1];
+		// return count[nums.length-1];
+		// return the maximum number in list count *** not necessary the last one
+		max = 0;
+		for(int ele: count) {
+			if(ele>max) {
+				max = ele;
+			}
+		}
+		return max;
 	}
+
 	// method to print out the sequence...
 	public void getSequence(int[] nums, int[] counts) {
 
 		String path = "";
 		int ind = 0;
+		int m = 0;
 		// add the maximum number first to the path and decrease...
 		for(int i=counts.length-1;i>0;i--) {
-			if(counts[i] == counts[i-1] + 1) {
+			if(m<counts[i]) {
+				// get the maximum number in the array
+				m = counts[i];
 				ind = i;
-				path = path+nums[ind];
-				break;
 			}
 		}
+		path = path+nums[ind];
+
 		int res = counts[ind] - 1;
 		for (int i=ind-1;i>=0;i--) {
 			if(counts[i]==res) {
@@ -75,7 +85,7 @@ public class TriSubseq {
 	}
 	public static void main(String args[]) {
 		TriSubseq ts = new TriSubseq();
-		int[] nums = {1,0,3,2,4,2};
+		int[] nums = {1,3,6,7,9,4,10,5,6};
 		// System.out.println(ts.subseq(nums));
 		System.out.println("number of elements in sequence " + ts.lengthOfLIS(nums));
 	}
