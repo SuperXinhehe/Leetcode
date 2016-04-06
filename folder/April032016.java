@@ -199,12 +199,46 @@ public class April032016 {
 		}
 		return outer;
 	}
+	// no unique so need mark to check if the value is already taken,,, so 
+	public List<List<Integer>> combinationSumII(int[] candidates,int target) {
+		List<Integer> inner = new ArrayList<Integer>();
+		List<List<Integer>> outer = new ArrayList<List<Integer>>();
+		List<List<Integer>> out = comSumRecurseII(candidates,target,inner,outer,new boolean[candidates.length]);
+		// remove duplicates 
+		HashSet<List<Integer>> set = new HashSet<List<Integer>>(out);
+		out.clear();
+		out.addAll(set);
+		return out;
+	}
 
+	public List<List<Integer>> comSumRecurseII(int[] candidates,int target,List<Integer> inner, List<List<Integer>> outer,boolean[] marked) {
+		if(target == 0) {
+			List<Integer> i = new ArrayList<Integer>(inner);
+			// if(!outer.contains(i)) {
+				outer.add(i);
+			// }
+			return outer;
+		}
+		else {
+			for(int i=0;i<candidates.length;i++) {
+				if(candidates[i] <= target && !marked[i]) {
+					if((!inner.isEmpty() && inner.get(inner.size()-1) <= candidates[i]) || inner.isEmpty()) {
+						marked[i] = true;
+						inner.add(candidates[i]);
+						outer = comSumRecurseII(candidates,target-candidates[i],inner,outer,marked);
+						inner.remove(inner.size()-1);	
+						marked[i] = false;
+					}
+				}
+			}
+		}
+		return outer;
+	}
 	public static void main(String[] args) {
 		April032016 a = new April032016();
-		int[] candidates = {2,3,6,7};
-		int target = 7;
-		List<List<Integer>> out = a.combinationSum(candidates,target);
+		int[] candidates = {10,1,2,7,6,1,5};
+		int target = 8;
+		List<List<Integer>> out = a.combinationSumII(candidates,target);
 		for(List<Integer> o: out) {
 			o.forEach(ele->System.out.print(ele));
 			System.out.println();
