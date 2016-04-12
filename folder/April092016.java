@@ -64,4 +64,26 @@ public class April092016 {
 		int[] nums = {1,101,2,3,100,4,5};
 		System.out.println(a.MaxSumIncreSub(nums));
 	}
+
+	    public List<List<Integer>> combinationSum3(int k, int n) {
+        List<List<Integer>> res = helper(k,n,1,new ArrayList<Integer>(),new ArrayList<List<Integer>>());
+        return res;
+    }
+    
+    public List<List<Integer>> helper(int k, int n,int num, List<Integer> l,List<List<Integer>> out) {
+        if (k==0 && n==0) {
+            out.add(new ArrayList<Integer>(l));
+            return out;
+        }
+        else if (k<1) return out;
+        else if (n>0) {
+            for (int i=num;i<=9;i++) {
+                    l.add(i);
+                    out = helper(k-1,n-i,i+1,l,out);
+                    l.remove(l.size()-1);
+            }
+            return out;
+        }
+        return out;
+    }
 }
